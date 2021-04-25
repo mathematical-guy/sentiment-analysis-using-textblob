@@ -1,0 +1,4 @@
+
+polarity = 	(polarity of individual words)*-0.5
+		------------------------------------
+			intesity

@@ -1,0 +1,13 @@
+Tweet{
+	username: narendramodi
+	count: 100
+	retweets: 2000
+	likes: 1500
+	Device: iPhone
+	Date: 4/12/19
+	Time: 07:15 AM
+		tweet{
+			//Tweet itself
+			
+		     }
+}

@@ -1,0 +1,29 @@
+ACCESS_TOKEN = "1182937725562839040-5YrDpVONjXsS23AEeTLMlP0l78NyEw"
+ACCESS_TOKEN_SECRET = "K8u7YES8B54sILH5ac2I94dz0cVMEm2LTdGaEG6JedvK0"
+CONSUMER_KEY = "1Wp7a4txIJyPn3Kq485OZ6dQo"
+CONSUMER_SECRET = "hQe4kAIuuZsFO3oe5E24AeBADRpPxtQ4FA258SXiZwOLyb8wFI"
+
+
+import tweepy
+import re
+import twitter_credentials
+import tweepy
+
+#class for printing tweets
+class LISTENER(tweepy.StreamListener):
+    def on_data(self, raw_data):                   #take in data from streamlistener
+        print(raw_data)
+        f = open("Tweets.text", 'a')                    # f is file object which allows open, write and other file funtions
+        f.write(raw_data)
+        return True
+    def on_error(self, status_code):               #prints encountered error
+        print(status_code)
+
+
+name = input("Enter name whose tweets you want to retrieve?")
+listenerobject = LISTENER()     #LISTENER OBJECT
+auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+streamobject = tweepy.Stream(auth, listenerobject)
+streamobject.filter(track = name)
+

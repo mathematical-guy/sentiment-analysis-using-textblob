@@ -1,0 +1,39 @@
+import tweepy
+import re
+import pandas as pd
+import twitter_credentials
+from tweepy import OAuthHandler
+"""Cleaning Tweets!"""
+def cleaning_tweet(tweet):
+    tweetx = str(tweet)
+    tweet_in_lowercase = tweetx.lower()
+    twt = re.sub(r'(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'".,<>?«»“”‘’]))', '', tweetx)
+    tw = re.sub(r"[.,;:$&*|?'-]", '', twt)
+    return tw
+
+"""Converting Tweets into dataframe"""
+def tweet_to_dataframe(tweets):
+    tweetss = []
+    for tweet in tweets:
+        if tweet.lang == "en":
+            tweetss.append(tweet)
+
+    df = pd.DataFrame(data = [tweet.text for tweet in tweetss], columns = ['Tweets'])
+    df['ID'] = [tweet.id for tweet in tweetss]
+    df['Retweet'] = [tweet.retweet_count for tweet in tweetss]
+    df['Length of Tweet'] = [len(tweet.text) for tweet in tweetss]
+    df.to_csv(r'tweetsincsv.csv')
+
+
+auth = OAuthHandler(twitter_credentials.CONSUMER_KEY, twitter_credentials.CONSUMER_SECRET)
+auth.set_access_token(twitter_credentials.ACCESS_TOKEN, twitter_credentials.ACCESS_TOKEN_SECRET)
+api = tweepy.API(auth)
+tweets = api.user_timeline(screen_name = 'narendramodi', count = 10)
+for tweet in tweets:
+    if tweet.lang == "en":
+        print(tweet.text)
+#print(type(tweets))
+print("***************************************\n")
+tweet_to_dataframe(tweets)
+#print(data_in_csv)
+# print(x)
